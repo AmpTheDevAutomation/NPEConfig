@@ -19,3 +19,10 @@ Configuration configuration = Configuration.newJsonConfig(new File("config.json"
         .initialize();
 configuration.save(); // the initial save is done in initialize() but you have to save manually on exit
 ```
+
+### Custom configuration types
+You can also use custom configuration types, like MySQL and PostgreSQL.
+To do this, you need to create a configuration type class that extends `ConfigurationType`.
+For examples, refer to `JSONConfigurationType`.
+After doing this, the code is basically the same, except for initializing the configuration.
+Instead of `Configuration.newJsonConfig(...)` you need to use `new Configuration(new CustomConfigurationType())`.
