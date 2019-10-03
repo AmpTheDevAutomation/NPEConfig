@@ -2,7 +2,6 @@ package tk.npecode.config.type;
 
 import tk.npecode.config.Configuration;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -13,6 +12,7 @@ import java.io.IOException;
 public interface ConfigurationType {
     /**
      * Initializes this configuration type
+     *
      * @param config the configuration object
      */
     void initialize(Configuration config);
@@ -31,9 +31,9 @@ public interface ConfigurationType {
      * Returns a value from this configuration.
      *
      * @param category the category
-     * @param name the name
-     * @param clazz the value type
-     * @param <T> the value type but it's a type parameter
+     * @param name     the name
+     * @param clazz    the value type
+     * @param <T>      the value type but it's a type parameter
      * @return the value ({@code null} if it doesn't exist)
      */
     <T> T get(String category, String name, Class<T> clazz);
@@ -42,13 +42,14 @@ public interface ConfigurationType {
      * Sets a value in this configuration.
      *
      * @param category the category
-     * @param name the name
-     * @param obj the object
+     * @param name     the name
+     * @param obj      the object
      */
     void set(String category, String name, Object obj);
 
     /**
      * Returns the display name of this configuration type
+     *
      * @return the display name
      */
     String getName();

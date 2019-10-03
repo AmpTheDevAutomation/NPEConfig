@@ -154,7 +154,7 @@ public class Configuration {
     /**
      * Returns the effective category name for a configuration class
      *
-     * @param clazz the class
+     * @param clazz      the class
      * @param annotation the class's annotation
      * @return the category name
      */
@@ -185,8 +185,8 @@ public class Configuration {
      * Determines if a class is a valid configuration class.
      *
      * @param clazz the class to determine
-     * @throws IllegalArgumentException if a field is annotated with @Option but can't be stored
      * @return {@code true} if valid, {@code false} if not
+     * @throws IllegalArgumentException if a field is annotated with @Option but can't be stored
      */
     private boolean isValidConfigurationClass(Class<?> clazz) {
         if (clazz.getAnnotation(ConfigurationClass.class) == null) return false;

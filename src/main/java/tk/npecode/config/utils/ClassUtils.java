@@ -1,6 +1,5 @@
 package tk.npecode.config.utils;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +69,7 @@ public final class ClassUtils {
     /**
      * Determines if a object has recursive fields.
      *
-     * @param obj the object
+     * @param obj      the object
      * @param previous the objects to check for
      * @return {@code true} if it has recursive fields, {@code false} if it doesn't.
      */
