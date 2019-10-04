@@ -163,10 +163,7 @@ public class Configuration {
             throw new IllegalArgumentException("Class " + clazz.getName() + " isn't a valid configuration class");
         }
         String name = annotation.value();
-        if (name.isEmpty()) {
-            name = clazz.getName();
-        }
-        return name;
+        return name.isEmpty() ? null : name;
     }
 
     /**

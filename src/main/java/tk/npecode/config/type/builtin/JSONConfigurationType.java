@@ -63,11 +63,16 @@ public class JSONConfigurationType implements ConfigurationType {
 
     @Override
     public <T> T get(String category, String name, Class<T> clazz) {
-        JsonElement element = object.get(category);
-        if (element == null || !element.isJsonObject()) {
-            return null;
+        JsonObject object;
+        if (category != null) {
+            JsonElement element = this.object.get(category);
+            if (element == null || !element.isJsonObject()) {
+                return null;
+            }
+            object = element.getAsJsonObject();
+        } else {
+            object = this.object;
         }
-        JsonObject object = element.getAsJsonObject();
         JsonElement element1 = object.get(name);
         if (element1 == null) return null;
         return GSON.fromJson(element1, clazz);
@@ -75,12 +80,17 @@ public class JSONConfigurationType implements ConfigurationType {
 
     @Override
     public void set(String category, String name, Object obj) {
-        JsonElement element = object.get(category);
-        if (element == null || !element.isJsonObject()) {
-            element = new JsonObject();
-            object.add(category, element);
+        JsonObject object;
+        if (category != null) {
+            JsonElement element = this.object.get(category);
+            if (element == null || !element.isJsonObject()) {
+                element = new JsonObject();
+                this.object.add(category, element);
+            }
+            object = element.getAsJsonObject();
+        } else {
+            object = this.object;
         }
-        JsonObject object = element.getAsJsonObject();
         object.add(name, GSON.toJsonTree(obj));
     }
 

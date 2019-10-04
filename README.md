@@ -3,7 +3,7 @@ An annotation-based configuration system built for use in NPECode projects.
 ## Usage
 To use NPEConfig, you need a configuration class with option fields, for example:
 ```java
-@ConfigurationClass("category" /* this is optional; if not present the full name is used */)
+@ConfigurationClass("category" /* this is optional; if not present the fields aren't in a category */)
 public class Configuration {
     @Option("option name")
     public static int theOption = 42;
