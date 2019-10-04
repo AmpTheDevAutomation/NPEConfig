@@ -23,9 +23,9 @@ public class ConfigurationTests {
         } catch (Throwable t) {
             e = t;
         }
-        /*if (JSON_TEST_FILE.exists() && !JSON_TEST_FILE.delete()) {
+        if (JSON_TEST_FILE.exists() && !JSON_TEST_FILE.delete()) {
             JSON_TEST_FILE.deleteOnExit();
-        }*/
+        }
         if (e != null) {
             throw e;
         }
