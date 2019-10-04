@@ -18,6 +18,8 @@ public class ConfigurationTests {
                     .addClass(TestConfiguration.class)
                     .addClass(TestConfiguration2.class)
                     .initialize();
+            configuration.delete(null, "test_value_2");
+            configuration.save();
         } catch (Throwable t) {
             e = t;
         }
@@ -35,7 +37,7 @@ public class ConfigurationTests {
         private static TestObject testObj = new TestObject("ok", 91);
     }
 
-    @ConfigurationClass
+    @ConfigurationClass(hasCategory = true)
     public static class TestConfiguration2 {
         @Option
         private static TestObject test = new TestObject("test2", 42);

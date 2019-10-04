@@ -108,4 +108,19 @@ public class JSONConfigurationType implements ConfigurationType {
     public String canStore(Object obj) {
         return ClassUtils.hasRecursiveFields(obj) ? "the object has recursive fields" : null;
     }
+
+    @Override
+    public void delete(String category, String name) {
+        JsonObject object;
+        if (category != null) {
+            JsonElement element = this.object.get(category);
+            if (element == null || !element.isJsonObject()) {
+                return;
+            }
+            object = element.getAsJsonObject();
+        } else {
+            object = this.object;
+        }
+        object.remove(name);
+    }
 }

@@ -69,4 +69,12 @@ public interface ConfigurationType {
      * @return {@code null} if the object can be stored, if it can't be stored the reason why it can't be stored
      */
     String canStore(Object obj);
+
+    /**
+     * Deletes a configuration entry.
+     *
+     * @param category the category
+     * @param name     the name
+     */
+    void delete(String category, String name);
 }

@@ -57,12 +57,28 @@ public class Configuration {
     }
 
     /**
+     * Returns the effective category name for a configuration class
+     *
+     * @param clazz      the class
+     * @param annotation the class's annotation
+     * @return the category name
+     */
+    private static String getEffectiveCategoryName(Class<?> clazz, ConfigurationClass annotation) {
+        if (annotation == null) {
+            throw new IllegalArgumentException("Class " + clazz.getName() + " isn't a valid configuration class");
+        }
+        String name = annotation.value();
+        return name.isEmpty() ? (annotation.hasCategory() ? clazz.getName() : null) : name;
+    }
+
+    /**
      * Saves this configuration.
      *
      * @return this configuration object
      * @throws IOException if it fails to save the configuration
      */
     public Configuration save() throws IOException {
+        ensureInitialized();
         for (Class<?> clazz : configurationClasses) {
             ConfigurationClass annotation = clazz.getAnnotation(ConfigurationClass.class);
             for (Field field : clazz.getDeclaredFields()) {
@@ -93,6 +109,7 @@ public class Configuration {
      * @throws IOException if it fails to reload the configuration
      */
     public Configuration reload() throws IOException {
+        ensureInitialized();
         type.reload();
         for (Class<?> clazz : configurationClasses) {
             ConfigurationClass annotation = clazz.getAnnotation(ConfigurationClass.class);
@@ -125,9 +142,53 @@ public class Configuration {
     public Configuration initialize() throws IOException {
         if (!initialized) {
             type.initialize(this);
-            reload().save();
             initialized = true;
+            reload().save();
         }
+        return this;
+    }
+
+    /**
+     * Deletes an entry from the configuration.
+     * Useful if the {@code @ConfigurationClass} annotation has changed and you want to clean up the old values.
+     *
+     * @param category the category
+     * @param name     the name
+     * @return this configuration
+     */
+    public Configuration delete(String category, String name) {
+        ensureInitialized();
+        type.delete(category, name);
+        return this;
+    }
+
+    /**
+     * Returns an entry from this configuration using raw category and class name.
+     * Useful if the {@code @ConfigurationClass} annotation has changed and you want to migrate the old values.
+     *
+     * @param category the category
+     * @param name     the name
+     * @param clazz    the value type
+     * @param <T>      the value type
+     * @return the value
+     */
+    public <T> T get(String category, String name, Class<T> clazz) {
+        ensureInitialized();
+        return type.get(category, name, clazz);
+    }
+
+    /**
+     * Sets an entry in this configuration using raw category and class name.
+     * Useful if the {@code @ConfigurationClass} has changed in a future release and you want to migrate the values now.
+     *
+     * @param category the category
+     * @param name     the name
+     * @param object   the value
+     * @return this configuration
+     */
+    public Configuration set(String category, String name, Object object) {
+        ensureInitialized();
+        type.set(category, name, object);
         return this;
     }
 
@@ -152,18 +213,12 @@ public class Configuration {
     }
 
     /**
-     * Returns the effective category name for a configuration class
-     *
-     * @param clazz      the class
-     * @param annotation the class's annotation
-     * @return the category name
+     * Throws an exception if the configuration hasn't been initialized.
      */
-    private static String getEffectiveCategoryName(Class<?> clazz, ConfigurationClass annotation) {
-        if (annotation == null) {
-            throw new IllegalArgumentException("Class " + clazz.getName() + " isn't a valid configuration class");
+    private void ensureInitialized() {
+        if (!initialized) {
+            throw new IllegalStateException("Configuration hasn't been initialized yet");
         }
-        String name = annotation.value();
-        return name.isEmpty() ? null : name;
     }
 
     /**

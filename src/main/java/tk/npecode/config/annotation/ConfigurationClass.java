@@ -20,4 +20,12 @@ public @interface ConfigurationClass {
      * @return the category name
      */
     String value() default "";
+
+    /**
+     * Returns whether this configuration should have no category.
+     * Only effective when value is set to an empty string or not set at all.
+     *
+     * @return {@code true} if it should be inside a category, {@code false} if it shouldn't be inside one.
+     */
+    boolean hasCategory() default false;
 }
